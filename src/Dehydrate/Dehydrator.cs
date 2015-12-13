@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
+using System.Runtime.CompilerServices;
 
 namespace Dehydrate
 {
@@ -23,6 +24,11 @@ namespace Dehydrate
 
         private void ProcessAssembly(string assemblyPath, string outputPath) {
             using (ModuleDefMD module = ModuleDefMD.Load(assemblyPath)) {
+                TypeRef attrRef = module.CorLibTypes.GetTypeRef("System.Runtime.CompilerServices", "ReferenceAssemblyAttribute");
+                var ctorRef = new MemberRefUser(module, ".ctor", MethodSig.CreateInstance(module.CorLibTypes.Void), attrRef);
+
+                module.Assembly.CustomAttributes.Add(new CustomAttribute(ctorRef));
+
                 foreach (var type in module.Types) {
 
                     // Rules (for each type in the module):
