@@ -29,8 +29,10 @@ namespace Dehydrate
 
                 module.Assembly.CustomAttributes.Add(new CustomAttribute(ctorRef));
 
-                foreach (var type in module.Types) {
-
+                foreach (var type in EnumerateTypes(module.Types)) {
+                    if (type.IsInterface) {
+                        continue;
+                    }
                     // Rules (for each type in the module):
                     // * Remove all private fields
                     // * Remove all private methods
@@ -90,9 +92,24 @@ namespace Dehydrate
             }
         }
 
+        private IEnumerable<TypeDef> EnumerateTypes(IEnumerable<TypeDef> types) {
+            foreach (var type in types) {
+                yield return type;
+                foreach (var nestedType in EnumerateTypes(type.NestedTypes)) {
+                    yield return nestedType;
+                }
+            }
+        }
+
         private void ClearMethodBody(MethodDef method) {
-            method.Body.Instructions.Clear();
-            method.Body.Instructions.Add(new Instruction(OpCodes.Ret));
+            if (method.Body != null) {
+                method.Body.ExceptionHandlers.Clear();
+                method.Body.Variables.Clear();
+                method.Body.Instructions.Clear();
+                method.Body.Instructions.Add(new Instruction(OpCodes.Ret));
+
+                method.Body.InitLocals = false;
+            }
         }
     }
 }
