@@ -1,10 +1,9 @@
 {
   "version": "1.0.0-*",
   "description": "Dehydrate Console Application",
-  "authors": [ "Daniel" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
+  "authors": [ "Daniel Mirmilshteyn" ],
+  "projectUrl": "https://github.com/dmirmilshteyn/Dehydrate",
+  "licenseUrl": "https://github.com/dmirmilshteyn/Dehydrate/blob/master/LICENSE",
 
   "compilationOptions": {
     "emitEntryPoint": true
@@ -18,7 +17,7 @@
   },
 
   "commands": {
-    "Dehydrate": "Dehydrate"
+    "dehydrate": "Dehydrate"
   },
 
   "frameworks": {
