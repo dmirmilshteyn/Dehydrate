@@ -31,4 +31,4 @@ For example, to generate a metadata-only reference assembly for ```Test.dll```, 
 dnx run dehydrate -a "path/to/Test.dll" -o "path/to/output/directory"
 ```
 
-The generated assembly will be available at "path/to/output/directory/Test.dll"
+The generated assembly will be available at ```path/to/output/directory/Test.dll```
